@@ -5,16 +5,12 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const firebaseConfig = {
-    apiKey: "API_KEY",
-    authDomain: "PROJECT_ID.firebaseapp.com",
-    // The value of `databaseURL` depends on the location of the database
-    databaseURL: "https://DATABASE_NAME.firebaseio.com",
-    projectId: "PROJECT_ID",
-    storageBucket: "PROJECT_ID.appspot.com",
-    messagingSenderId: "SENDER_ID",
-    appId: "APP_ID",
-    // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
-    measurementId: "G-MEASUREMENT_ID",
+  apiKey: "AIzaSyB2yvEyLGiPcu-XkSHXY5XbxxPkVEhGLrQ",
+  authDomain: "twitter-f553c.firebaseapp.com",
+  projectId: "twitter-f553c",
+  storageBucket: "twitter-f553c.appspot.com",
+  messagingSenderId: "336493647524",
+  appId: "1:336493647524:web:bf19ebdeefed0cf31f3831"
   };
 
 const app = initializeApp(firebaseConfig);
