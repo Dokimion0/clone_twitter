@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import {dbService} from "fbase"
+import {dbService, storageService} from "fbase"
 import { addDoc, collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { v4 as uuidv4} from 'uuid'
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 import Tweet from "components/Tweet";
 
 function Home({userObj}){
     const [tweet, setTweet] = useState('');
     const [tweets, setTweets] = useState([]);
-    const [attachment, setAttachment] = useState()
+    const [attachment, setAttachment] = useState('');
     const getTweets = ()=>{
-        const q = query(collection(dbService, "tweet"),orderBy("createdAt", "desc")        )
+        const q = query(collection(dbService, 'tweetObj'),orderBy("createdAt", "desc")        )
          onSnapshot(q, (querySnapshot) => {
             const tweetArray = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -22,17 +24,22 @@ function Home({userObj}){
     },[])
     const onSubmit = async(e) =>{
         e.preventDefault();
-        try{
-            const docRef = await addDoc(collection(dbService, "tweet"), {
+        let attachmentUrl ='';
+        if(attachment != ''){
+            const attachmentRef = ref(storageService, `${userObj.uid}`);
+            const response = await uploadString(attachmentRef,attachment,"data_url")
+            attachmentUrl = await getDownloadURL(attachmentRef)
+            setAttachment('');
+        }
+        const tweetObj = {
             text : tweet,
             createdAt: Date.now(),
-            creatorId : userObj.uid
-            });
-            console.log("Document written with ID: ", docRef.id);
-        } catch (error) {
-            console.error("Error adding document: ", error);
+            creatorId : userObj.uid,
+            attachmentUrl
         }
-        setTweet('');
+            await addDoc(collection(dbService, "tweetObj"),tweetObj);
+            setTweet('');
+            setAttachment('');
     }
     const onChange= e =>{
         const {target:{value}} = e

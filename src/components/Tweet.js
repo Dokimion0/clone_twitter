@@ -1,6 +1,8 @@
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
-import {dbService} from "fbase"
+import { getStorage, ref, deleteObject } from "firebase/storage";
+import {dbService, storageService} from "fbase"
 import { useState } from "react";
+
 
 function Tweet({tweetObj, isOwner}){
     const [editing, setEditing] = useState(false)
@@ -9,7 +11,10 @@ function Tweet({tweetObj, isOwner}){
         const ok = window.confirm("Are you sure you want to delete this tweet");
         console.log(ok)
         if(ok){
-            await deleteDoc(doc(dbService, "tweet", `${tweetObj.id}`));
+            await deleteDoc(doc(dbService, "tweetObj", `${tweetObj.id}`));
+            if(`${tweetObj.attachmentUrl}`){
+                await deleteObject(ref(storageService, `${tweetObj.attachmentUrl}`))
+            }
         } 
     }
 
@@ -25,7 +30,7 @@ function Tweet({tweetObj, isOwner}){
 
     const onSubmit= async(e) =>{
         e.preventDefault();
-        const updateTweet = doc(dbService, "tweet", `${tweetObj.id}`);
+        const updateTweet = doc(dbService, "tweetObj", `${tweetObj.id}`);
         await updateDoc(updateTweet, {
             text : newTweet
         });
@@ -47,6 +52,7 @@ function Tweet({tweetObj, isOwner}){
                 ) : (
                 <>
                     <h4>{tweetObj.text}</h4>
+                    {tweetObj.attachmentUrl && (<img src={tweetObj.attachmentUrl} width="50px" height="50px"></img>)}
                     {isOwner && (
                         <>
                             <button onClick={onDeleteClick}>Delete Tweet</button>
