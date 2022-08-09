@@ -13,7 +13,7 @@ function Tweet({tweetObj, isOwner}){
         if(ok){
             await deleteDoc(doc(dbService, "tweetObj", `${tweetObj.id}`));
             if(`${tweetObj.attachmentUrl}`){
-                await deleteObject(ref(storageService, `${tweetObj.attachmentUrl}`))
+                await deleteObject(ref(storageService, `${tweetObj.attachmentUrl}`));
             }
         } 
     }
