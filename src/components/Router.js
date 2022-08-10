@@ -5,18 +5,19 @@ import Navigation from "components/Navigation";
 import Profile from "routes/Profile";
 
 
-function AppRouter({isLoggedIn, userObj}){
+function AppRouter({refreshUser, isLoggedIn, userObj}){
     return(
         <>
-        {isLoggedIn && <Navigation/>}      
+        {isLoggedIn && <Navigation userObj={userObj}/>}      
             <Routes>
                 { isLoggedIn ? (
                 <>
                  <Route path ="/" element={<Home userObj={userObj}/>}/> 
-                 <Route path ="/profile" element={<Profile/>}/> 
+                 <Route path ="/profile" element={
+                 <Profile refreshUser={refreshUser} userObj={userObj}/>}/> 
                 </>
                 ): 
-                <Route path ="/" element={<Auth/>}/>
+                <Route path ="/" element={<Auth refreshUser={refreshUser}/>}/>
                 }
             </Routes>
         </>
