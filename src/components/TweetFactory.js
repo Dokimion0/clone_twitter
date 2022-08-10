@@ -2,6 +2,8 @@ import { dbService, storageService } from "fbase";
 import { addDoc, collection } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 function TweetFactory({userObj}){
     const [tweet, setTweet] = useState('');
@@ -45,16 +47,34 @@ function TweetFactory({userObj}){
     const onClearAttachment = () => setAttachment(null)
 
     return(
-        <form onSubmit={onSubmit}>
-                <input value ={tweet} onChange={onChange}type="text" placeholder="What's on your mind?" maxLength={120}/>
-                <input type="file" accept="image/*" onChange={onFileChange}/>
-                <input type="submit" value="tweet"/>
-                {attachment && 
+        <form onSubmit={onSubmit} className="factoryForm">
+            <div className="factoryInput__container">
+                <input className="factoryInput__input"
+                value ={tweet} onChange={onChange}type="text" 
+                placeholder="What's on your mind?" maxLength={120}/>
+                <input type="submit" value="&rarr;" className="factoryInput__arrow" />
+            </div>
+            <label for="attach-file" className="factoryInput__label">
+                <span>Add photos</span>
+                <FontAwesomeIcon icon={faPlus} />
+            </label>
+                <input id="attach-file"
+                    type="file"
+                    accept="image/*"
+                    onChange={onFileChange}
+                    style={{
+                    opacity: 0,
+                    }}
+                />
+                {attachment && (
                     <div>
-                        <img src={attachment} width="50px" height="50px" />
-                        <button onClick={onClearAttachment}>Clear</button>
+                        <img src={attachment} style={{backgroundImage: attachment,}}/>
+                        <div className="factoryForm__clear" onClick={onClearAttachment}>
+                            <span>Remove</span>
+                            <FontAwesomeIcon icon={faTimes} />
+                        </div>
                     </div>
-                }
+                )}
             </form>
     )
 }
