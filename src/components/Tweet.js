@@ -41,11 +41,11 @@ function Tweet({tweetObj, isOwner}){
     }
 
     return(
-        <div className="nweet">
+        <div className="tweet">
             {
                 editing ? (
                 <>
-                    <form onSubmit={onSubmit} className="container nweetEdit">
+                    <form onSubmit={onSubmit} className="container tweetEdit">
                         <input onChange={onChange} type="text" placeholder="Edit" value={newTweet} required className="formInput"/>
                         <input type="submit" value="Update Tweet" className="formInput"/>
                     </form>
@@ -58,7 +58,7 @@ function Tweet({tweetObj, isOwner}){
                     <h4>{tweetObj.text}</h4>
                     {tweetObj.attachmentUrl && (<img src={tweetObj.attachmentUrl}></img>)}
                     {isOwner && (
-                        <div class="nweet__actions">
+                        <div className="tweet__actions">
                             <span onClick={onDeleteClick}>
                                 <FontAwesomeIcon icon={faTrash} />
                             </span>
